@@ -3,9 +3,13 @@ Input: a List of integers
 Returns: a List of integers
 '''
 def product_of_all_other_numbers(arr):
-    # Your code here
+    # find product of all numbers together
+    total = 1
+    for n in arr:
+        total *= n
 
-    pass
+    # divide by each number to get the product of other numbers
+    return [total//n for n in arr]
 
 
 if __name__ == '__main__':

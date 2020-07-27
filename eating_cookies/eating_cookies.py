@@ -3,29 +3,26 @@ Input: an integer
 Returns: an integer
 '''
 #  Recursive brute force solution, times out on large tests
-def eating_cookies(n, l=[]):
-    # Base cases
-    if n == 0:
+def eating_cookies(n, cache=None):
+    # Base cases: n == 1 or lower
+    if n < 0:
+        return 0
+    elif n == 0 or n == 1:
         return 1
-    elif n == 1:
-        return 1
-    elif n == 2:
-        # 1+1 or 2
-        return 2
-    elif n == 3:
-        # 1+1+1, 1+2, 2+1, 3
-        return 4
+    elif cache is not None and cache[n] > 0:
+        # we've already found this answer, just return it
+        return cache[n]
+    else:
+        if cache is None:
+            # initialize the cache
+            cache = [0 for i in range(n+1)]
+        
+        # find recursive anser, store it in cache
+        cache[n] = (eating_cookies(n-1, cache) +
+                    eating_cookies(n-2, cache) +
+                    eating_cookies(n-3, cache))
     
-    # Recursion: try each step and call again on the remainder
-    # Since all smaller cases are returned above, n >= 4 here
-    # Eat 1 then the rest
-    sum = eating_cookies(n-1)
-    # Eat 2 then the rest
-    sum += eating_cookies(n-2)
-    # Eat 3 then the rest
-    sum += eating_cookies(n-3)
-
-    return sum
+    return cache[n]
             
 
 if __name__ == "__main__":
